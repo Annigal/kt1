@@ -1,0 +1,90 @@
+<!DOCTYPE html> 
+<html lang="ru"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Таблица с числами</title> 
+    <style> 
+        table { 
+            border-collapse: collapse; 
+            width: 100%; 
+            max-width: 600px; 
+            margin: 20px auto; 
+        } 
+        table, th, td { 
+            border: 1px solid black; 
+        } 
+        td { 
+            width: 50px; 
+            height: 50px; 
+            text-align: center; 
+            font-size: 20px; 
+        } 
+        .highlight { 
+            background-color: orange; 
+        } 
+    </style> 
+</head> 
+<body> 
+    <table id="numberTable"></table> 
+    <button onclick="addNumber()">Добавить число</button> 
+ 
+    <script> 
+        // Функция для создания массива случайных чисел 
+        function generateRandomArray(size, min, max) { 
+            let arr = []; 
+            for (let i = 0; i < size; i++) { 
+                arr.push(Math.floor(Math.random() * (max - min + 1)) + min); 
+            } 
+            return arr; 
+        } 
+ 
+        // Функция для создания таблицы 
+        function createTable(array, rows, cols) { 
+            const table = document.getElementById("numberTable"); 
+            table.innerHTML = ""; 
+            let index = 0; 
+            for (let i = 0; i < rows; i++) { 
+                const row = document.createElement("tr"); 
+                for (let j = 0; j < cols; j++) { 
+                    const cell = document.createElement("td"); 
+                    cell.textContent = array[index]; 
+                    if (array[index] >= 50) { 
+                        cell.classList.add("highlight"); 
+                    } 
+                    row.appendChild(cell); 
+                    index++; 
+                } 
+                table.appendChild(row); 
+            } 
+        } 
+ 
+        // Изначальное создание таблицы 
+        let numbers = generateRandomArray(30, 0, 99); 
+        createTable(numbers, 5, 6); 
+ 
+        // Функция для добавления числа 
+        function addNumber() { 
+            const newNumber = Math.floor(Math.random() * 100); 
+            numbers.push(newNumber); 
+            const table = document.getElementById("numberTable"); 
+            const rows = table.rows.length; 
+            const cols = table.rows[0].cells.length; 
+            const row = Math.floor((numbers.length - 1) / cols); 
+            const col = (numbers.length - 1) % cols; 
+ 
+            if (col === 0 && row >= rows) { 
+                const newRow = document.createElement("tr"); 
+                table.appendChild(newRow); 
+            } 
+            const newRow = table.rows[row]; 
+            const newCell = document.createElement("td"); 
+            newCell.textContent = newNumber; 
+            if (newNumber >= 50) { 
+                newCell.classList.add("highlight"); 
+            } 
+            newRow.appendChild(newCell); 
+        } 
+    </script> 
+</body> 
+</html>
